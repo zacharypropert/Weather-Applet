@@ -54,10 +54,11 @@ public class Weather {
 			condition = c.get(0);
 		}
 		catch (IndexOutOfBoundsException e){
-			for (Element condition : doc.select("li.bg-su.cl.hv")) {
+			for (Element condition : doc.select("li.bg-cl.cl.hv")) {
 				String tempCondition = condition.select("div.cond").text();
 				c.add(tempCondition);			
 			}
+			condition = c.get(0);
 		}
 	}
 }
