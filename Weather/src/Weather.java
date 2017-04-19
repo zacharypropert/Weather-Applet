@@ -5,7 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-/*
+/**
  * Uses Jsoup to scrape the temperature and your current location from accuweather.com
  * 
  * Had to use ArrayLists to store the data because the for loop receives multiple null values
@@ -21,7 +21,7 @@ public class Weather {
 	private ArrayList<String> t;
 	private ArrayList<String> c;
 	
-	/*
+	/**
 	 * Scrapes the Location, Temperature and Condition for www.accuweather.com.
 	 * Uses try catch block because at night the class name changes on the website, 
 	 * so the first part tries as if it is day time and if it returns null the catch block
@@ -43,22 +43,12 @@ public class Weather {
 			t.add(tempTemperature);
 			l.add(tempLocation);			
 		} 
-		
 		location = l.get(1);
 		temperature = t.get(1);
-		try {
-			for (Element condition : doc.select("li.bg-su.cl.hv")) { 
-				String tempCondition = condition.select("div.cond").text();
-				c.add(tempCondition);			
-			}
-			condition = c.get(0);
+		for (Element condition : doc.select("div.cond")) { 
+			String tempCondition = condition.select("div.cond").text();
+			c.add(tempCondition);			
 		}
-		catch (IndexOutOfBoundsException e){
-			for (Element condition : doc.select("li.bg-cl.cl.hv")) {
-				String tempCondition = condition.select("div.cond").text();
-				c.add(tempCondition);			
-			}
-			condition = c.get(0);
-		}
+		condition = c.get(0);
 	}
 }

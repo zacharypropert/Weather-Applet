@@ -26,7 +26,7 @@ public class GUI {
     private JLabel tempLabel;
     private JLabel condLabel;
 
-   /*
+   /**
     * Builds the GUI with values passed through from Run.java
     */
    public void build(String loc, String temp, String cond){
@@ -76,7 +76,7 @@ public class GUI {
 		frame.setVisible(true);
 	}
 	
-	/*
+	/**
 	 * Aligns the graphics to the center of the screen.
 	 * 
 	 */
