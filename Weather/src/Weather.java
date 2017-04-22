@@ -5,50 +5,53 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-/**
- * Uses Jsoup to scrape the temperature and your current location from accuweather.com
- * 
- * Had to use ArrayLists to store the data because the for loop receives multiple null values
- * for the temperature and location. The ArrayList takes all the values and the second value of each ArrayList
- * is always the desired value.
- */
-
 public class Weather {
 	public String temperature;
 	public String location;
 	public String condition;
 	private ArrayList<String> l;
 	private ArrayList<String> t;
-	private ArrayList<String> c;
+	private ArrayList<String> condList;
 	
 	/**
-	 * Scrapes the Location, Temperature and Condition for www.accuweather.com.
-	 * Uses try catch block because at night the class name changes on the website, 
-	 * so the first part tries as if it is day time and if it returns null the catch block
-	 * tries it using the night class name.
+	 * Uses Jsoup and scrapes the Location, Temperature and Condition from www.accuweather.com.
+	 * Location and Temperature are scraped from the little panel towards the top of the website
+	 * just above the menu. 
 	 * 
-	 * Using arraylists to store the information, still learning how to properly scrape and don't know how to specifically
-	 * get only the one value I'm looking for.
+	 * Uses a 'for' block to get the current conditions because it is scraped from the weather panel next to the map
+	 * and the selection returns 3 conditions. So I add them to a list, and get the first entry because it is always the conditions for your 
+	 * current city. 
+	 * 
 	 */
 	
 	public void getWeather() throws IOException {
 
 		Document doc = Jsoup.connect("http://www.accuweather.com/").get();
-		t = new ArrayList<String>();
-		l = new ArrayList<String>();
-		c = new ArrayList<String>();
+		//t = new ArrayList<String>();
+		//l = new ArrayList<String>();
+		condList = new ArrayList<String>(); //ArrayList used to store the conditions
+		location = doc.select("span.current-city").text(); //declares location
+		temperature = doc.select("span.local-temp").text(); //declares temperature
+		
+		/*
 		for (Element weather : doc.select("a.tab")) {
 			String tempLocation = weather.select(".current-city").text();
 			String tempTemperature = weather.select(".local-temp").text();
 			t.add(tempTemperature);
 			l.add(tempLocation);			
 		} 
-		location = l.get(1);
-		temperature = t.get(1);
+		*/
+		
+		//location = l.get(1);
+		//temperature = t.get(1);
+		
+		/*
+		 * Loops through all the conditions under div.cond on the website and adds them to condList
+		 */
 		for (Element condition : doc.select("div.cond")) { 
 			String tempCondition = condition.select("div.cond").text();
-			c.add(tempCondition);			
+			condList.add(tempCondition);			
 		}
-		condition = c.get(0);
+		condition = condList.get(0);
 	}
 }
